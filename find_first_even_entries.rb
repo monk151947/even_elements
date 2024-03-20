@@ -22,13 +22,17 @@ end
 values = find_first_even_num(array)
 def get_api_data(values)
     result = []
-    values.each do |uri|
-        response = HTTP.get(uri) 
-        if ! response.parse.empty?
-        result << { title: response.parse['title'] ? response.parse['title'] : nil , completed: response.parse['completed']? response.parse['completed'] : nil  }
+    begin
+        values.each do |uri|
+            response = HTTP.get(uri) 
+            if ! response.parse.empty?
+            result << { title: response.parse['title'] ? response.parse['title'] : nil , completed: response.parse['completed']? response.parse['completed'] : nil  }
+            end
         end
-    end
     result
+   rescue StandardError => e
+    puts "error: #{e.message}" 
+   end
 end   
 
 p results = get_api_data(values)
